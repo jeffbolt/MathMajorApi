@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MathMajorApi
@@ -23,8 +24,7 @@ namespace MathMajorApi
 			return Request.Headers["MathMajorApiToken"].ToString();
 		}
 
-		[Route("fibinacci")]
-		[HttpGet]
+		[HttpGet("fibinacci")]
 		[ProducesResponseType(typeof(IEnumerable<double>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -40,8 +40,7 @@ namespace MathMajorApi
 			return Ok(fibonacci);
 		}
 
-		[Route("isprime")]
-		[HttpGet]
+		[HttpGet("isprime")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -56,8 +55,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsPrime(number));
 		}
 
-		[Route("ishappy")]
-		[HttpGet]
+		[HttpGet("ishappy")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -72,8 +70,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsHappy(number));
 		}
 
-		[Route("ishappyprime")]
-		[HttpGet]
+		[HttpGet("ishappyprime")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -88,8 +85,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsHappyPrime(number));
 		}
 
-		[Route("primes")]
-		[HttpGet]
+		[HttpGet("primes")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -104,8 +100,7 @@ namespace MathMajorApi
 			return Ok(_mathService.Primes(count));
 		}
 
-		[Route("pdi")]
-		[HttpGet]
+		[HttpGet("pdi")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -120,8 +115,7 @@ namespace MathMajorApi
 			return Ok(_mathService.Pdi(number));
 		}
 
-		[Route("happynumbers")]
-		[HttpGet]
+		[HttpGet("happynumbers")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -136,8 +130,7 @@ namespace MathMajorApi
 			return Ok(_mathService.HappyNumbers(count));
 		}
 
-		[Route("happyprimes")]
-		[HttpGet]
+		[HttpGet("happyprimes")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -152,12 +145,11 @@ namespace MathMajorApi
 			return Ok(_mathService.HappyPrimes(count));
 		}
 
-		[Route("ispalindrome")]
-		[HttpGet]
+		[HttpGet("ispalindromic")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
-		public IActionResult IsPalindrome(int number)
+		public IActionResult IsPalindromic(int number)
 		{
 			if (!_validationService.IsValidApiToken(GetApiToken()))
 				return Unauthorized();
@@ -165,7 +157,57 @@ namespace MathMajorApi
 				return BadRequest(string.Format("The number must be an integer value between {0} and {1}.",
 					int.MinValue, int.MaxValue));
 
-			return Ok(_mathService.IsPalindrome(number));
+			return Ok(_mathService.Palindromic(number));
+		}
+
+		[HttpPost("isbenford")]
+		[ProducesResponseType(typeof(List<double>), 200)]
+		[ProducesResponseType(401)]
+		[ProducesResponseType(404)]
+		public IActionResult IsBenford(List<double> numbers)
+		{
+			if (!_validationService.IsValidApiToken(GetApiToken()))
+				return Unauthorized();
+
+			return Ok(_mathService.IsBenford(numbers));
+		}
+
+		[HttpGet("Pi")]
+		[ProducesResponseType(typeof(double), 200)]
+		[ProducesResponseType(400)]
+		public IActionResult Pi(int digits)
+		{
+			if (digits < 1 || digits > 15)
+				return BadRequest("The digits field must be between 1 and 15");
+			else if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+			else
+				return Ok(_mathService.Pi(digits));
+		}
+
+		[HttpPost("Pi")]
+		[ProducesResponseType(typeof(double), 200)]
+		[ProducesResponseType(400)]
+		public IActionResult Pi(DoublePrecision precision)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+			else
+				return Ok(_mathService.Pi(precision.Digits));
+		}
+
+		[HttpGet("CalculatePi")]
+		[ProducesResponseType(typeof(string), 200)]
+		public IActionResult CalculatePi(int digits)
+		{
+			return Ok(_mathService.CalculatePi(digits));
+		}
+
+		[HttpGet("ApproximatePi")]
+		[ProducesResponseType(typeof(BigInteger), 200)]
+		public IActionResult CalculatePi(int digits, int iterations)
+		{
+			return Ok(_mathService.ApproximatePi(digits, iterations));
 		}
 	}
 }

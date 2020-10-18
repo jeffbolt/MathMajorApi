@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Numerics;
+using System.Text;
 
 namespace MathMajorApi
 {
@@ -10,10 +14,12 @@ namespace MathMajorApi
 		// https://en.wikipedia.org/wiki/Lucky_number
 		// https://en.wikipedia.org/wiki/Harshad_number
 
+		#region Fibonacci
 		public IEnumerable<double> GetFibonacci(int count)
 		{
 			return FibonacciD().Take(count);
 		}
+
 		private IEnumerable<int> GetFibonacciR(int count)
 		{
 			var fib = new List<int>();
@@ -79,7 +85,9 @@ namespace MathMajorApi
 				next = current + (current = next);
 			}
 		}
+		#endregion
 
+		#region Prime and Happy Numbers
 		public bool IsPrime(int number)
 		{
 			// https://en.wikipedia.org/wiki/Prime_number
@@ -170,12 +178,6 @@ namespace MathMajorApi
 			return IsPrime(number) && IsHappy(number);
 		}
 
-		public bool IsPalindrome(int number)
-		{
-			// https://en.wikipedia.org/wiki/Palindromic_number
-			return number.ToString().Equals(number.ToString().Reverse());
-		}
-
 		public IEnumerable<int> Primes(int count)
 		{
 			var numbers = new List<int>();
@@ -211,6 +213,96 @@ namespace MathMajorApi
 			}
 			return numbers;
 		}
+		#endregion
+
+		#region Calculate Pi (https://stackoverflow.com/questions/11677369/)
+		public double Pi(int digits)
+		{
+			return Math.Round(Math.PI, digits);
+		}
+
+		public string CalculatePi(int digits)
+		{
+			digits++;
+			uint[] x = new uint[digits * 10 / 3 + 2];
+			uint[] r = new uint[digits * 10 / 3 + 2];
+			uint[] pi = new uint[digits];
+
+			for (int j = 0; j < x.Length; j++)
+				x[j] = 20;
+
+			for (int i = 0; i < digits; i++)
+			{
+				uint carry = 0;
+				for (int j = 0; j < x.Length; j++)
+				{
+					uint num = (uint)(x.Length - j - 1);
+					uint dem = num * 2 + 1;
+					x[j] += carry;
+
+					uint q = x[j] / dem;
+					r[j] = x[j] % dem;
+					carry = q * num;
+				}
+
+				pi[i] = (x[x.Length - 1] / 10);
+				r[x.Length - 1] = x[x.Length - 1] % 10; ;
+
+				for (int j = 0; j < x.Length; j++)
+					x[j] = r[j] * 10;
+			}
+
+			var result = "";
+			uint c = 0;
+
+			for (int i = pi.Length - 1; i >= 0; i--)
+			{
+				pi[i] += c;
+				c = pi[i] / 10;
+
+				result = (pi[i] % 10).ToString() + result;
+			}
+
+			result = string.Concat(result.Substring(0, 1), ".", result.Substring(1));
+			return result;
+		}
+
+		// digits = number of digits to calculate;
+		// iterations = accuracy (higher the number the more accurate it will be and the longer it will take.)
+		public BigInteger ApproximatePi(int digits, int iterations)
+		{
+			return 16 * ArcTan1OverX(5, digits).ElementAt(iterations)
+				- 4 * ArcTan1OverX(239, digits).ElementAt(iterations);
+		}
+
+		//arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
+		public IEnumerable<BigInteger> ArcTan1OverX(int x, int digits)
+		{
+			var mag = BigInteger.Pow(10, digits);
+			var sum = BigInteger.Zero;
+			bool sign = true;
+			for (int i = 1; true; i += 2)
+			{
+				var cur = mag / (BigInteger.Pow(x, i) * i);
+				if (sign)
+					sum += cur;
+				else
+					sum -= cur;
+				yield return sum;
+				sign = !sign;
+			}
+		}
+		#endregion
+
+		#region Other Math Functions
+		public bool Palindromic(int number)
+		{
+			// https://en.wikipedia.org/wiki/Palindromic_number
+			char[] reversed = number.ToString().Reverse().ToArray();
+			var sb = new StringBuilder();
+			foreach (char ch in reversed) { sb.Append(ch); }
+			return number.ToString().Equals(sb.ToString());
+		}
 
 		public IEnumerable<int> Palindromes(int count)
 		{
@@ -218,10 +310,34 @@ namespace MathMajorApi
 			int i = 1;
 			while (numbers.Count() < count)
 			{
-				if (IsPalindrome(i)) numbers.Add(i);
+				if (Palindromic(i)) numbers.Add(i);
 				i++;
 			}
 			return numbers;
 		}
+
+		public bool IsBenford(List<double> numbers)
+		{
+			//int[numbers.Length - 1] leadingDigits;
+			var leadingDigits = new List<double>(); //= new Array(numbers.Length - 1);
+
+			for (int i = 0; i < numbers.Count - 1; i++)
+			{
+				int first = int.Parse(numbers[i].ToString().Substring(0, 1));
+				//leadingDigits[i] = first;
+				leadingDigits.Add(first);
+			}
+
+			var count = new List<int>();
+
+			for (int i = 1; i <= 9; i++)
+			{
+				count.Add(leadingDigits.Count(x => x == i));
+				Debug.WriteLine("Count of {0}: {1}, Ratio: {2}", i, count[i], (count[i] / 9).ToString("P", CultureInfo.InvariantCulture));
+			}
+
+			return true;
+		}
+		#endregion
 	}
 }
