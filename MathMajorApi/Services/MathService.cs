@@ -34,7 +34,7 @@ namespace MathMajorApi
 			if (n < count)
 			{
 				if (n == 0)
-					numbers.AddRange(new List<int>{ 1, 1 });
+					numbers.AddRange(new List<int> { 1, 1 });
 				else
 					numbers.Add(number);
 
@@ -294,7 +294,37 @@ namespace MathMajorApi
 		}
 		#endregion
 
+		#region Roman Numerals
+		//public string IntToRoman(uint number)
+		//{
+		//	// Note: UInt32 range is {0, 4294967295}, so largest number expressable is 4,294,967,295. Negative numbers not allowed.
+		//	string roman;
+		//}
+		#endregion
+
 		#region Other Math Functions
+		public double Power(double number, int exponent)
+		{
+			// Same as Math.Pow
+			double result = 1;
+
+			for (int i = 0; i < exponent; i++)
+				result *= number;			
+			return result;
+		}
+
+		public IEnumerable<double> PowersOf(double number, int exponent)
+		{
+			// Same as Math.Pow
+			double result = 1;
+
+			for (int i = 0; i < exponent; i++)
+			{
+				result *= number;
+				yield return result;
+			}
+		}
+
 		public bool Palindromic(int number)
 		{
 			// https://en.wikipedia.org/wiki/Palindromic_number
@@ -337,6 +367,58 @@ namespace MathMajorApi
 			}
 
 			return true;
+		}
+
+		public (double x1, double x2) SolveQuadratic(double a, double b, double c)
+		{
+			/* Find the roots of the equation ax^2 + bx + c = 0 => x = (-b ִ± √(b^2 - 4ac)) / 2a
+				https://owlcation.com/stem/How-to-Find-the-Roots-of-A-Quadratic-Function
+				https://en.wikipedia.org/wiki/Quadratic_formula
+				https://mathnovice.com/root-types-quadratic-equation-examples-graphs/
+					If b^2 - 4ac = 0, one real root (may be irrational)
+					If b^2 - 4ac > 0, two real roots
+					If b^2 - 4ac < 0, two imaginary roots
+				TODO: return Complex numbers?
+				https://docs.microsoft.com/en-us/dotnet/api/system.numerics.complex
+			*/
+			double x1 = (-b + Math.Sqrt(Math.Pow(b, 2) - 4 * a * c)) / 2 * a;
+			double x2 = (-b - Math.Sqrt(Math.Pow(b, 2) - 4 * a * c)) / 2 * a;
+			return (x1, x2);
+		}
+
+		public double SummationNaturalNumbers(int n)
+		{
+			// https://en.wikipedia.org/wiki/Summation
+			// https://en.wikipedia.org/wiki/Natural_number
+			// Σ = n(n + 1) / 2
+			return n * (n + 1) / 2;
+		}
+
+		public double SummationNaturalNumbersR(int start, int end, double sum)
+		{
+			// https://en.wikipedia.org/wiki/Summation
+			// https://en.wikipedia.org/wiki/Natural_number
+			// Σ = n(n + 1) / 2
+			if (start >= end)
+				return sum;
+			else
+				return SummationNaturalNumbersR(++start, end, sum + 1);
+		}
+
+		public double Compound(double principle, double rate, int count, int iterations)
+		{
+			if (count >= iterations)
+				return principle;
+			else
+				return Compound(principle + (principle * rate), rate, ++count, iterations);
+		}
+
+		public double CompoundDouble(double number, int current, int iterations)
+		{
+			if (current >= iterations)
+				return number;
+			else
+				return CompoundDouble(number + number * 2, ++current, iterations);
 		}
 		#endregion
 	}

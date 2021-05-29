@@ -24,7 +24,7 @@ namespace MathMajorApi
 			return Request.Headers["MathMajorApiToken"].ToString();
 		}
 
-		[HttpGet("fibinacci")]
+		[HttpGet("Fibinacci")]
 		[ProducesResponseType(typeof(IEnumerable<double>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -40,7 +40,7 @@ namespace MathMajorApi
 			return Ok(fibonacci);
 		}
 
-		[HttpGet("isprime")]
+		[HttpGet("IsPrime")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -55,7 +55,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsPrime(number));
 		}
 
-		[HttpGet("ishappy")]
+		[HttpGet("IsHappy")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -70,7 +70,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsHappy(number));
 		}
 
-		[HttpGet("ishappyprime")]
+		[HttpGet("IsHappyPrime")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -85,7 +85,7 @@ namespace MathMajorApi
 			return Ok(_mathService.IsHappyPrime(number));
 		}
 
-		[HttpGet("primes")]
+		[HttpGet("Primes")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -100,7 +100,7 @@ namespace MathMajorApi
 			return Ok(_mathService.Primes(count));
 		}
 
-		[HttpGet("pdi")]
+		[HttpGet("Pdi")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -115,7 +115,7 @@ namespace MathMajorApi
 			return Ok(_mathService.Pdi(number));
 		}
 
-		[HttpGet("happynumbers")]
+		[HttpGet("HappyNumbers")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -130,7 +130,7 @@ namespace MathMajorApi
 			return Ok(_mathService.HappyNumbers(count));
 		}
 
-		[HttpGet("happyprimes")]
+		[HttpGet("HappyPrimes")]
 		[ProducesResponseType(typeof(IEnumerable<int>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -145,7 +145,7 @@ namespace MathMajorApi
 			return Ok(_mathService.HappyPrimes(count));
 		}
 
-		[HttpGet("ispalindromic")]
+		[HttpGet("IsPalindromic")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -160,7 +160,7 @@ namespace MathMajorApi
 			return Ok(_mathService.Palindromic(number));
 		}
 
-		[HttpPost("isbenford")]
+		[HttpPost("IsBenford")]
 		[ProducesResponseType(typeof(List<double>), 200)]
 		[ProducesResponseType(401)]
 		[ProducesResponseType(404)]
@@ -208,6 +208,55 @@ namespace MathMajorApi
 		public IActionResult CalculatePi(int digits, int iterations)
 		{
 			return Ok(_mathService.ApproximatePi(digits, iterations));
+		}
+
+		[HttpGet("Power")]
+		[ProducesResponseType(typeof(double), 200)]
+		public IActionResult Power(double number, int exponent)
+		{
+			return Ok(_mathService.Power(number, exponent));
+		}
+
+		[HttpGet("PowersOf")]
+		[ProducesResponseType(typeof(IEnumerable<double>), 200)]
+		public IActionResult PowersOf(double number, int exponent)
+		{
+			return Ok(_mathService.PowersOf(number, exponent));
+		}
+
+		[HttpGet("SolveQuadratic")]
+		[ProducesResponseType(typeof((double x1, double x2)), 200)]
+		public IActionResult SolveQuadratic(double a, double b, double c)
+		{
+			return Ok(_mathService.SolveQuadratic(a, b, c));
+		}
+
+		[HttpGet("SummationNaturalNumbers")]
+		[ProducesResponseType(typeof(double), 200)]
+		public IActionResult SummationNaturalNumbers(int n)
+		{
+			return Ok(_mathService.SummationNaturalNumbers(n));
+		}
+
+		[HttpGet("SummationNaturalNumbersR")]
+		[ProducesResponseType(typeof(double), 200)]
+		public IActionResult SummationNaturalNumbersR(int start, int end)
+		{
+			return Ok(_mathService.SummationNaturalNumbersR(start, end, 0));
+		}
+
+		[HttpGet("Compound")]
+		[ProducesResponseType(typeof(double), 200)]
+		public IActionResult Compound(double principle, double rate, int iterations)
+		{
+			return Ok(_mathService.Compound(principle, rate, 1, iterations));
+		}
+
+		[HttpGet("CompoundDouble")]
+		[ProducesResponseType(typeof(double), 200)]
+		public IActionResult CompoundDouble(double number, int iterations)
+		{
+			return Ok(_mathService.CompoundDouble(number, 1, iterations));
 		}
 	}
 }

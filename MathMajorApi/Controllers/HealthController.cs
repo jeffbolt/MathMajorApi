@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MathMajorApi
@@ -13,10 +16,13 @@ namespace MathMajorApi
 		[ProducesResponseType(typeof(HealthResponse), 200)]
 		public IActionResult Index()
 		{
+			var assembly = Assembly.GetExecutingAssembly();
 			return Ok(new
 			{
 				Status = "Healthy",
-				Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+				Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+				AssemblyVersion = assembly.GetName().Version.ToString(),
+				FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion
 			});
 		}
 	}
