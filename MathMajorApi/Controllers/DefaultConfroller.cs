@@ -258,5 +258,28 @@ namespace MathMajorApi
 		{
 			return Ok(_mathService.CompoundDouble(number, 1, iterations));
 		}
+
+		[HttpGet("IntToRoman")]
+		[ProducesResponseType(typeof(uint), 200)]
+		public IActionResult IntToRoman(uint number)
+		{
+			return Ok(_mathService.IntToRoman(number));
+		}
+
+		[HttpGet("RomanToInt")]
+		[ProducesResponseType(typeof(string), 200)]
+		public IActionResult RomanToInt(string roman)
+		{
+			roman = roman.Trim().ToUpper();
+			return Ok(_mathService.RomanToInt(roman));
+		}
+
+		[HttpPost("TapCode/Encode")]
+		[ProducesResponseType(typeof(List<MatrixElement>), 200)]
+		public IActionResult EncodeTapCode(string input)
+		{
+			input = input.Trim().ToUpper();
+			return Ok(_mathService.EncodeTapCode(input));
+		}
 	}
 }
