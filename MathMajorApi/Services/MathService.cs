@@ -295,11 +295,56 @@ namespace MathMajorApi
 		#endregion
 
 		#region Roman Numerals
-		//public string IntToRoman(uint number)
-		//{
-		//	// Note: UInt32 range is {0, 4294967295}, so largest number expressable is 4,294,967,295. Negative numbers not allowed.
-		//	string roman;
-		//}
+		public enum RomanNumeral : uint
+		{
+			M = 1000,
+			D = 500,
+			C = 100,
+			L = 50,
+			X = 10,
+			V = 5,
+			I = 1
+		}
+
+		public string IntToRoman(uint number)
+		{
+			// https://stackoverflow.com/questions/7040289
+			// Note: UInt32 range is {0, 4294967295}, so largest number expressable is 4,294,967,295. Negative numbers not allowed.
+			if ((number < 0) || (number > uint.MaxValue)) throw new ArgumentOutOfRangeException(nameof(number));
+			if (number < 1) return string.Empty;
+			if (number >= 1000) return "M" + IntToRoman(number - 1000);
+			if (number >= 900) return "CM" + IntToRoman(number - 900);
+			if (number >= 500) return "D" + IntToRoman(number - 500);
+			if (number >= 400) return "CD" + IntToRoman(number - 400);
+			if (number >= 100) return "C" + IntToRoman(number - 100);
+			if (number >= 90) return "XC" + IntToRoman(number - 90);
+			if (number >= 50) return "L" + IntToRoman(number - 50);
+			if (number >= 40) return "XL" + IntToRoman(number - 40);
+			if (number >= 10) return "X" + IntToRoman(number - 10);
+			if (number >= 9) return "IX" + IntToRoman(number - 9);
+			if (number >= 5) return "V" + IntToRoman(number - 5);
+			if (number >= 4) return "IV" + IntToRoman(number - 4);
+			if (number >= 1) return "I" + IntToRoman(number - 1);
+			throw new ArgumentOutOfRangeException(nameof(number));
+		}
+
+		public uint RomanToInt(string roman)
+		{
+			uint prev = 0, cur, total = 0;
+			foreach (char c in roman.Reverse().ToArray())
+			{
+				cur = (uint)Enum.Parse(typeof(RomanNumeral), c.ToString());
+
+				if (cur < prev)
+					total -= cur;
+				else
+					total += cur;
+
+				prev = cur;
+			}
+			return total;
+		}
+
 		#endregion
 
 		#region Other Math Functions
@@ -419,6 +464,12 @@ namespace MathMajorApi
 				return number;
 			else
 				return CompoundDouble(number + number * 2, ++current, iterations);
+		}
+
+		public List<MatrixElement> EncodeTapCode(string input)
+		{
+			var tapCode = new TapCode();
+			return tapCode.Encode(input);
 		}
 		#endregion
 	}
