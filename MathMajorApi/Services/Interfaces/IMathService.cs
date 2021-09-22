@@ -27,5 +27,8 @@ namespace MathMajorApi
 		double SummationNaturalNumbersR(int start, int end, double sum);
 		double Compound(double principle, double rate, int count, int iterations);
 		double CompoundDouble(double number, int current, int iterations);
+		string IntToRoman(uint number);
+		uint RomanToInt(string roman);
+		List<MatrixElement> EncodeTapCode(string input);
 	}
 }
