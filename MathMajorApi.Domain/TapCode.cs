@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MathMajorApi
+namespace MathMajorApi.Domain
 {
 	// https://en.wikipedia.org/wiki/Tap_code
 	public class MatrixElement

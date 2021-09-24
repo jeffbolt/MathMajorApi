@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MathMajorApi
+namespace MathMajorApi.Domain
 {
 	public class DoublePrecision
 	{
