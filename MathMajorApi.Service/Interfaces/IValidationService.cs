@@ -1,4 +1,4 @@
-﻿namespace MathMajorApi
+﻿namespace MathMajorApi.Service.Interfaces
 {
 	public interface IValidationService
 	{

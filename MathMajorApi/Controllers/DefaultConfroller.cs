@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using MathMajorApi.Domain;
+using MathMajorApi.Service.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
+
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace MathMajorApi
 {
@@ -205,7 +209,7 @@ namespace MathMajorApi
 
 		[HttpGet("ApproximatePi")]
 		[ProducesResponseType(typeof(BigInteger), 200)]
-		public IActionResult CalculatePi(int digits, int iterations)
+		public IActionResult ApproximatePi(int digits, int iterations)
 		{
 			return Ok(_mathService.ApproximatePi(digits, iterations));
 		}
@@ -280,6 +284,20 @@ namespace MathMajorApi
 		{
 			input = input.Trim().ToUpper();
 			return Ok(_mathService.EncodeTapCode(input));
+		}
+
+		[HttpGet("ToHex")]
+		[ProducesResponseType(typeof(string), 200)]
+		public IActionResult ToHex(long value)
+		{
+			return Ok(_mathService.ToHex(value));
+		}
+
+		[HttpGet("FromHex")]
+		[ProducesResponseType(typeof(long), 200)]
+		public IActionResult FromHex(string value)
+		{
+			return Ok(_mathService.FromHex(value));
 		}
 	}
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MathMajorApi.Service;
+using MathMajorApi.Service.Interfaces;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -33,6 +36,7 @@ namespace MathMajorApi
 		{
 			Configuration = configuration;
 			_logger = logger;
+			_logger.LogInformation($"Startup invoked at {DateTime.Now:g}");
 		}
 
 		public IConfiguration Configuration { get; }

@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Reflection;
 
+using MathMajorApi.Domain;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MathMajorApi

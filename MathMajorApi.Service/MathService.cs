@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MathMajorApi.Domain;
+using MathMajorApi.Service.Interfaces;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -6,7 +9,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace MathMajorApi
+namespace MathMajorApi.Service
 {
 	public class MathService : IMathService
 	{
@@ -30,7 +33,7 @@ namespace MathMajorApi
 		private void FibonacciR(ref List<int> numbers, int count, int number)
 		{
 			// Recursive Fibonacci function
-			int n = numbers.Count();
+			int n = numbers.Count;
 			if (n < count)
 			{
 				if (n == 0)
@@ -38,12 +41,12 @@ namespace MathMajorApi
 				else
 					numbers.Add(number);
 
-				n = numbers.Count();
+				n = numbers.Count;
 				FibonacciR(ref numbers, count, numbers.ElementAt(n - 1) + numbers.ElementAt(n - 2));
 			}
 		}
 
-		private IEnumerable<int> Fibonacci()
+		private static IEnumerable<int> Fibonacci()
 		{
 			int current = 1, next = 1;
 
@@ -54,7 +57,7 @@ namespace MathMajorApi
 			}
 		}
 
-		private IEnumerable<long> FibonacciL()
+		private static IEnumerable<long> FibonacciL()
 		{
 			long current = 1, next = 1;
 
@@ -64,7 +67,7 @@ namespace MathMajorApi
 				next = current + (current = next);
 			}
 		}
-		private IEnumerable<ulong> FibonacciUL()
+		private static IEnumerable<ulong> FibonacciUL()
 		{
 			ulong current = 1, next = 1;
 
@@ -75,7 +78,7 @@ namespace MathMajorApi
 			}
 		}
 
-		private IEnumerable<double> FibonacciD()
+		private static IEnumerable<double> FibonacciD()
 		{
 			double current = 1, next = 1;
 
@@ -113,7 +116,7 @@ namespace MathMajorApi
 
 			while (number > 0)
 			{
-				total = total + Math.Pow(number % _base, 2);
+				total += Math.Pow(number % _base, 2);
 				number = Math.Floor(number / _base);
 			}
 
@@ -182,7 +185,7 @@ namespace MathMajorApi
 		{
 			var numbers = new List<int>();
 			int i = 1;
-			while (numbers.Count() < count)
+			while (numbers.Count < count)
 			{
 				if (IsPrime(i)) numbers.Add(i);
 				i++;
@@ -194,7 +197,7 @@ namespace MathMajorApi
 		{
 			var numbers = new List<int>();
 			int i = 1;
-			while (numbers.Count() < count)
+			while (numbers.Count < count)
 			{
 				if (IsHappy(i)) numbers.Add(i);
 				i++;
@@ -206,7 +209,7 @@ namespace MathMajorApi
 		{
 			var numbers = new List<int>();
 			int i = 1;
-			while (numbers.Count() < count)
+			while (numbers.Count < count)
 			{
 				if (IsHappyPrime(i)) numbers.Add(i);
 				i++;
@@ -245,8 +248,8 @@ namespace MathMajorApi
 					carry = q * num;
 				}
 
-				pi[i] = (x[x.Length - 1] / 10);
-				r[x.Length - 1] = x[x.Length - 1] % 10; ;
+				pi[i] = x[^1] / 10;  // C# 8.0: Index from end operator ^  x[x.Length - 1] => x[^1]
+				r[x.Length - 1] = x[^1] % 10; ;
 
 				for (int j = 0; j < x.Length; j++)
 					x[j] = r[j] * 10;
@@ -263,20 +266,33 @@ namespace MathMajorApi
 				result = (pi[i] % 10).ToString() + result;
 			}
 
-			result = string.Concat(result.Substring(0, 1), ".", result.Substring(1));
+			result = string.Concat(result.Substring(0, 1), ".", result[1..]); // Range operator result.Substring(1) => result[1..]
 			return result;
 		}
 
 		// digits = number of digits to calculate;
 		// iterations = accuracy (higher the number the more accurate it will be and the longer it will take.)
-		public BigInteger ApproximatePi(int digits, int iterations)
+		/*	Iterations	Value
+			1			3.140597029326068
+			2			3.141621029325044
+			3			3.141591772182196
+			4			3.141592682404404
+			5			3.141592652615316
+			6			3.141592653623556
+			7			3.141592653588612
+			8			3.141592653589844
+			9			3.141592653589812
+			10+			3.141592653589812
+		*/
+		public string ApproximatePi(int digits, int iterations)
 		{
-			return 16 * ArcTan1OverX(5, digits).ElementAt(iterations)
+			BigInteger bigInteger = 16 * ArcTan1OverX(5, digits).ElementAt(iterations)
 				- 4 * ArcTan1OverX(239, digits).ElementAt(iterations);
+			return bigInteger.ToString().Insert(1, ".");
 		}
 
 		//arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
-		public IEnumerable<BigInteger> ArcTan1OverX(int x, int digits)
+		public static IEnumerable<BigInteger> ArcTan1OverX(int x, int digits)
 		{
 			var mag = BigInteger.Pow(10, digits);
 			var sum = BigInteger.Zero;
@@ -383,7 +399,7 @@ namespace MathMajorApi
 		{
 			var numbers = new List<int>();
 			int i = 1;
-			while (numbers.Count() < count)
+			while (numbers.Count < count)
 			{
 				if (Palindromic(i)) numbers.Add(i);
 				i++;
@@ -470,6 +486,18 @@ namespace MathMajorApi
 		{
 			var tapCode = new TapCode();
 			return tapCode.Encode(input);
+		}
+
+		public string ToHex(long value)
+		{
+			return string.Format("{0:x}", value);
+			//return value.ToString("X");
+		}
+		
+		public long FromHex(string value)
+		{
+			return long.Parse(value, NumberStyles.HexNumber);
+			//return Convert.ToInt64(value, 16);
 		}
 		#endregion
 	}

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace MathMajorApi.Models
+namespace MathMajorApi.Domain.Models
 {
 	// https://stackoverflow.com/questions/7040289/converting-integers-to-roman-numerals#11749642
 	public class Roman
