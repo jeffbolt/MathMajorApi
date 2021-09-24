@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using MathMajorApi.Domain;
+using MathMajorApi.Service.Interfaces;
 
-namespace MathMajorApi
+using System.Diagnostics;
+
+namespace MathMajorApi.Service
 {
 	public class ValidationService : IValidationService
 	{

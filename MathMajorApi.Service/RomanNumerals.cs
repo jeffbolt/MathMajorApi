@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MathMajorApi.Services
+namespace MathMajorApi.Service.Services
 {
 	public class Context
 	{

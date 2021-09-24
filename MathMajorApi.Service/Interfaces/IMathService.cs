@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using MathMajorApi.Domain;
 
-namespace MathMajorApi
+using System.Collections.Generic;
+
+namespace MathMajorApi.Service.Interfaces
 {
 	public interface IMathService
 	{
@@ -19,7 +20,7 @@ namespace MathMajorApi
 		IEnumerable<int> Primes(int count);
 		double Pi(int digits);
 		string CalculatePi(int digits);
-		BigInteger ApproximatePi(int digits, int iterations);
+		string ApproximatePi(int digits, int iterations);
 		int Pdi(double number, int _base = 10);
 		bool IsBenford(List<double> numbers);
 		(double x1, double x2) SolveQuadratic(double a, double b, double c);
@@ -30,5 +31,7 @@ namespace MathMajorApi
 		string IntToRoman(uint number);
 		uint RomanToInt(string roman);
 		List<MatrixElement> EncodeTapCode(string input);
+		string ToHex(long value);
+		long FromHex(string value);
 	}
 }

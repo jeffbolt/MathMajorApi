@@ -1,4 +1,4 @@
-﻿namespace MathMajorApi
+﻿namespace MathMajorApi.Domain
 {
 	public class HealthResponse
 	{
