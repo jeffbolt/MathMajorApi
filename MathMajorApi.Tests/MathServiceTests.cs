@@ -2,6 +2,7 @@
 using MathMajorApi.Service.Interfaces;
 
 using System;
+using System.Collections.Generic;
 
 using Xunit;
 
@@ -9,19 +10,46 @@ namespace MathMajorApi.Tests
 {
 	public class MathServiceTests
 	{
-		private readonly IMathService _service;
+		private readonly IMathService service;
 
 		public MathServiceTests()
 		{
-			_service = new MathService();
+			service = new MathService();
+		}
+
+		public static IEnumerable<object[]> GetAccountFibinacciTestData()
+		{
+			var testData = new List<object[]>
+			{
+				new object[] { 1, new List<double> { 1 } },
+				new object[] { 2, new List<double> { 1, 1 } },
+				new object[] { 3, new List<double> { 1, 1, 2 } },
+				new object[] { 4, new List<double> { 1, 1, 2, 3 } },
+				new object[] { 5, new List<double> { 1, 1, 2, 3, 5 } },
+				new object[] { 6, new List<double> { 1, 1, 2, 3, 5, 8 } },
+				new object[] { 7, new List<double> { 1, 1, 2, 3, 5, 8, 13 } },
+				new object[] { 8, new List<double> { 1, 1, 2, 3, 5, 8, 13, 21 } },
+				new object[] { 9, new List<double> { 1, 1, 2, 3, 5, 8, 13, 21, 34 } },
+				new object[] { 10, new List<double> { 1, 1, 2, 3, 5, 8, 13, 21, 34, 55 } }
+			};
+
+			return testData;
+		}
+
+		[Theory]
+		[MemberData(nameof(GetAccountFibinacciTestData))]
+		public void FibinacciTest(int count, IEnumerable<double> expected)
+		{
+			var actual = service.GetFibonacci(count);
+			Assert.Equal(expected, actual);
 		}
 
 		[Fact]
 		public void CalculatePi_IsAccuracte()
 		{
-			string calculated = _service.CalculatePi(16);		// 3.1415926535897932
-			double actual = Convert.ToDouble(calculated);		// 3.1415926535897931 (rounding bug?)
-			double expected = Math.PI;							// 3.1415926535897931
+			string calculated = service.CalculatePi(16);        // 3.1415926535897932
+			double actual = Convert.ToDouble(calculated);       // 3.1415926535897931 (rounding bug?)
+			double expected = Math.PI;                          // 3.1415926535897931
 			Assert.Equal(expected, actual);
 		}
 
@@ -52,9 +80,9 @@ namespace MathMajorApi.Tests
 		[InlineData(23, "3.14159265358979323846264")]
 		[InlineData(24, "3.141592653589793238462643")]
 		[InlineData(25, "3.1415926535897932384626433")]
-		public void CalculatePi(int digits, string expected)
+		public void CalculatePiTest(int digits, string expected)
 		{
-			string actual = _service.CalculatePi(digits);
+			string actual = service.CalculatePi(digits);
 			Assert.Equal(expected, actual);
 		}
 
@@ -69,9 +97,9 @@ namespace MathMajorApi.Tests
 		[InlineData(15, 7, "3.141592653588612")]
 		[InlineData(15, 8, "3.141592653589844")]
 		[InlineData(15, 9, "3.141592653589812")]
-		public void ApproximatePi(int digits, int iterations, string expected)
+		public void ApproximatePiTest(int digits, int iterations, string expected)
 		{
-			string actual = _service.ApproximatePi(digits, iterations);
+			string actual = service.ApproximatePi(digits, iterations);
 			Assert.Equal(expected, actual);
 		}
 	}
