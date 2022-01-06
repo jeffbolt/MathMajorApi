@@ -272,18 +272,6 @@ namespace MathMajorApi.Service
 
 		// digits = number of digits to calculate;
 		// iterations = accuracy (higher the number the more accurate it will be and the longer it will take.)
-		/*	Iterations	Value
-			1			3.140597029326068
-			2			3.141621029325044
-			3			3.141591772182196
-			4			3.141592682404404
-			5			3.141592652615316
-			6			3.141592653623556
-			7			3.141592653588612
-			8			3.141592653589844
-			9			3.141592653589812
-			10+			3.141592653589812
-		*/
 		public string ApproximatePi(int digits, int iterations)
 		{
 			BigInteger bigInteger = 16 * ArcTan1OverX(5, digits).ElementAt(iterations)
